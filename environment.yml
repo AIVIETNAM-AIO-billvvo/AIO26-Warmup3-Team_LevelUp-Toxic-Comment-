@@ -1,0 +1,13 @@
+name: toxic-nlp
+channels:
+  - defaults
+dependencies:
+  - python=3.12
+  - ipykernel
+  - numpy
+  - scikit-learn
+  - pandas
+  - matplotlib
+  - jupyter
+  - pyarrow
+prefix: /opt/miniconda3/envs/toxic-nlp
