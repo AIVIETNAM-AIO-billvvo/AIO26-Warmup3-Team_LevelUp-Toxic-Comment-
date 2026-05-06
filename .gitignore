@@ -40,9 +40,6 @@ ENV/
 *.swo
 *~
 
-# Dataset (download from Kaggle — see README)
-dataset/raw/
-dataset/processed/
 
 # Model artifacts and large outputs
 *.pkl
