@@ -10,4 +10,12 @@ dependencies:
   - matplotlib
   - jupyter
   - pyarrow
+  - nltk
+  - tqdm
+  - pytest
+  - pip
+  - pip:
+      - fasttext-wheel
+      - contractions
+      - regex
 prefix: /opt/miniconda3/envs/toxic-nlp

@@ -58,3 +58,14 @@ mlruns/
 # Secrets
 *.env
 kaggle.json
+
+# Data and downloaded NLP assets
+dataset/models/
+nltk_data/
+
+# Pytest
+.pytest_cache/
+
+#local doc file
+/doc
+/doc/*

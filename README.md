@@ -19,9 +19,18 @@ A team project built on the **Jigsaw Toxic Comment Classification Challenge** da
 AIO26-Warmup3-Team_LevelUp-Toxic-Comment/
 ├── dataset/
 │   ├── raw/         # Original Kaggle CSV files (gitignored — download manually)
-│   └── processed/   # Cleaned / feature-engineered data (gitignored)
+│   ├── processed/   # Cleaned / feature-engineered data (gitignored)
+│   └── models/      # Downloaded NLP assets, e.g. fastText lid.176.ftz (gitignored)
 ├── notebook/
-│   └── data_expore.ipynb
+│   ├── data_expore.ipynb   # EDA
+│   └── data_clean.ipynb    # Cleaning pipeline runner + verification
+├── src/
+│   ├── clean.py            # str->str cleaning functions + clean_dataframe()
+│   └── setup_nlp.py        # Idempotent NLTK + fastText asset downloads
+├── scripts/
+│   └── run_clean.py        # CLI: python scripts/run_clean.py --split both
+├── tests/
+│   └── test_clean.py       # pytest unit tests for clean.py
 ├── .gitignore
 └── README.md
 ```
@@ -73,6 +82,45 @@ pip install -r requirements.txt
 ```bash
 jupyter notebook notebook/data_expore.ipynb
 ```
+
+---
+
+## Cleaning the data
+
+Before modeling, run the cleaning pipeline to produce `dataset/processed/train_clean.csv` and `test_clean.csv`.
+
+**One-time NLP asset download** (NLTK corpora + fastText `lid.176.ftz`, ~1 MB total). The pipeline does this automatically on first run, but you can pre-fetch:
+```bash
+python src/setup_nlp.py
+```
+
+**Run the cleaning** (CLI; takes ~10 min for both splits on a laptop):
+```bash
+python scripts/run_clean.py --split both    # or: --split train | --split test
+```
+Outputs:
+- `dataset/processed/train_clean.csv` — cleaned + lemmatized + English-only + deduped (id + comment_text + 6 label columns)
+- `dataset/processed/test_clean.csv`  — same text cleaning, **all 153k rows preserved** (id + comment_text)
+- `dataset/processed/cleaning_report.json` — row counts dropped, label-distribution drift, library versions
+
+**Or use the notebook** for an interactive run with sanity-check cells:
+```bash
+jupyter notebook notebook/data_clean.ipynb
+```
+
+**Run unit tests:**
+```bash
+pytest tests/test_clean.py
+```
+
+What the pipeline does (in order):
+1. Decode HTML entities; strip `\n`/`\t`/`\r`
+2. Remove URLs, file paths, emails, IPv4/IPv6
+3. Strip Wikipedia markup (`[[...]]`, `{{...}}`, headers, bold/italic)
+4. Cap repeated chars (`looool` → `lool`)
+5. Detect language with fastText; **train**-only: drop non-English (confidence < 0.7)
+6. Lowercase → expand contractions → remove punctuation → remove stopwords → lemmatize (NLTK WordNet)
+7. **train**-only: drop empty rows after cleaning, drop duplicates
 
 ---
 
