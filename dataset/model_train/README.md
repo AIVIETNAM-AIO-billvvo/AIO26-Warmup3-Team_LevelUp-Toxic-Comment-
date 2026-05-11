@@ -20,9 +20,12 @@ Dựa trên tập dữ liệu từ cuộc thi **Jigsaw Toxic Comment Classificat
 - **Đánh giá:** Scikit-learn (ROC-AUC, F1-score)
 - **Công cụ theo dõi:** Matplotlib
 ## Thông số đánh giá mô hình trong quá trình training
-![Mô tả ảnh](AIO26-Warmup3-Team_LevelUp-Toxic-Comment-\dataset\model_train\images\image-1.png)
+![Thông số đánh giá](dataset/model_train/images/image-1.png)
 
 
 ## Loss và metric
-![alt text](AIO26-Warmup3-Team_LevelUp-Toxic-Comment-\dataset\model_train\images\image-2.png)
+![Biểu đồ Loss](dataset/model_train/images/image-2.png)
+
 ## 🚀 Hướng dẫn cài đặt (Local)
+Tải các thư viện trong file requirements.txt: **pip install -r requirements.txt**
+Dô folder dataset -> models -> chạy file test_model.py.
