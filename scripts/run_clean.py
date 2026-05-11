@@ -14,6 +14,7 @@ import sys
 from datetime import datetime, timezone
 from importlib import metadata as importlib_metadata
 from pathlib import Path
+from typing import Union, List
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
@@ -35,6 +36,33 @@ LABEL_COLS = [
     "toxic", "severe_toxic", "obscene", "threat", "insult", "identity_hate",
 ]
 
+def clean_text(texts: Union[str, List[str]]) -> Union[str, List[str]]:
+    """
+    Hàm dùng để làm sạch text khi test thực tế (inference).
+    Hỗ trợ đầu vào là một chuỗi (str) hoặc danh sách các chuỗi (list).
+    """
+    is_single_string = isinstance(texts, str)
+    if is_single_string:
+        texts = [texts]
+        
+    # Bọc vào DataFrame để tận dụng lại hàm clean_dataframe
+    df = pd.DataFrame({"comment_text": texts})
+    
+
+    cleaned_df, _ = clean_dataframe(
+        df,
+        text_col="comment_text",
+        classical=True,
+        drop_lang=False,
+        drop_empty=False,
+        drop_dups=False,
+    )
+    
+    # Lấy ra kết quả
+    result = cleaned_df["comment_text"].tolist()
+    
+    # Nếu đầu vào là 1 string thì trả về 1 string, nếu là list thì trả về list
+    return result[0] if is_single_string else result
 
 def _label_dist(df: pd.DataFrame) -> dict[str, float]:
     if not all(c in df.columns for c in LABEL_COLS):
