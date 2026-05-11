@@ -20,7 +20,7 @@ import html
 from typing import Callable
 
 import pandas as pd
-import regex as re
+import re
 from tqdm.auto import tqdm
 
 from src.setup_nlp import (

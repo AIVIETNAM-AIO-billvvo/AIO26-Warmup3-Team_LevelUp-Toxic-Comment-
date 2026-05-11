@@ -11,3 +11,6 @@ contractions==0.1.73
 regex==2024.11.6
 tqdm==4.67.1
 pytest==8.3.4
+gradio
+transformers
+torch
