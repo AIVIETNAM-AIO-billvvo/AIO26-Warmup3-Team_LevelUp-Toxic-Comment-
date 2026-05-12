@@ -12,7 +12,7 @@ Dựa trên tập dữ liệu từ cuộc thi **Jigsaw Toxic Comment Classificat
 - **Identity Hate**: Ghét bỏ sắc tộc, tôn giáo, giới tính...
 
 ## 🛠️ Công nghệ và Thư viện sử dụng
-- **Ngôn ngữ:** Python 3.x
+- **Ngôn ngữ:** Python 3.11
 - **Framework Deep Learning:** PyTorch
 - **Thư viện NLP:** Hugging Face Transformers & Tokenizers
 - **Giao diện người dùng:** Gradio
@@ -29,5 +29,8 @@ Dựa trên tập dữ liệu từ cuộc thi **Jigsaw Toxic Comment Classificat
 
 
 ## 🚀 Hướng dẫn cài đặt (Local)
+Model đã được lưu trong huggingface hub: tinhuynh79/toxic-comment-bert-v1
 Tải các thư viện trong file requirements.txt: **pip install -r requirements.txt**
-Dô folder dataset -> models -> chạy file test_model.py.
+Dô folder dataset -> models -> chạy file test_model.py -> ctrl + click chuột vào local URL.  
+<img width="819" height="137" alt="image" src="https://github.com/user-attachments/assets/23cbd089-63ea-4446-beb7-7e53503e398b" />
+
