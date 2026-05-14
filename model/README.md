@@ -31,6 +31,7 @@ Dựa trên tập dữ liệu từ cuộc thi **Jigsaw Toxic Comment Classificat
 ## 🚀 Hướng dẫn cài đặt (Local)
 Model đã được lưu trong huggingface hub: tinhuynh79/toxic-comment-bert-v1
 Tải các thư viện trong file requirements.txt: **pip install -r requirements.txt**
-Dô folder dataset -> models -> chạy file test_model.py -> ctrl + click chuột vào local URL.  
+
+**Dô folder models -> chạy file test_model.py -> ctrl + click chuột vào local URL.**
 <img width="819" height="137" alt="image" src="https://github.com/user-attachments/assets/23cbd089-63ea-4446-beb7-7e53503e398b" />
 
