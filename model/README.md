@@ -52,9 +52,9 @@ Kết quả:
 Kết quả cho thấy F1 ở các label có sự thay đổi rõ rệt như: identity_hate, threat, severe_toxic.
 
 ## 🚀 Hướng dẫn cài đặt (Local)
-Model đã được lưu trong huggingface hub: tinhuynh79/toxic-comment-bert-v1
+Model đã được lưu trong huggingface hub: tinhuynh79/bert-toxic-comment-classifier
 Tải các thư viện trong file requirements.txt: **pip install -r requirements.txt**
 
-**Dô folder models -> chạy file test_model.py -> ctrl + click chuột vào local URL.**
+**Dô folder model -> chạy file test_model.py -> ctrl + click chuột vào local URL.**
 <img width="819" height="137" alt="image" src="https://github.com/user-attachments/assets/23cbd089-63ea-4446-beb7-7e53503e398b" />
 
