@@ -5,20 +5,22 @@ import gradio as gr
 from transformers import BertTokenizer, BertForSequenceClassification
 import sys
 import os
-current_dir = os.path.dirname(os.path.abspath(__file__))
-parent_dir = os.path.dirname(current_dir)
-root_dir = os.path.dirname(parent_dir)
-if root_dir not in sys.path:
-    sys.path.append(root_dir)
+import json 
+
+current_dir = os.path.dirname(os.path.abspath(__file__)) 
+parent_dir = os.path.dirname(current_dir) 
+if parent_dir not in sys.path:
+    sys.path.append(parent_dir)
 
 from script.run_clean import clean_text
+
 # ==========================================
-# 1. CẤU HÌNH MODEL
+# 1. CẤU HÌNH MODEL VÀ THRESHOLDS
 # ==========================================
-# Đặt tên Model Hugging Face của bạn vào đây
-# Ví dụ: "voquangthua/toxic-comment-bert"
-# Nếu bạn muốn chạy từ thư mục có sẵn ở máy, thay bằng: "./my_model"
-MODEL_NAME = "tinhuynh79/toxic-comment-bert-v1"
+MODEL_NAME = "tinhuynh79/bert-toxic-comment-classifier"
+
+# Danh sách các nhãn gốc (Key trong file json)
+LABEL_COLS = ['toxic', 'severe_toxic', 'obscene', 'threat', 'insult', 'identity_hate']
 
 print("⏳ Đang tải Model và Tokenizer (lần đầu sẽ mất vài phút)...")
 try:
@@ -34,9 +36,20 @@ model.to(device)
 model.eval()
 print(f"✅ Đã tải xong model! Đang chạy trên: {device}")
 
+# Đọc file best_thresholds.json
+try:
+    # Đảm bảo file best_thresholds.json nằm cùng thư mục với file code này
+    thresholds_path = os.path.join(current_dir, 'best_thresholds.json')
+    with open(thresholds_path, 'r', encoding='utf-8') as f:
+        best_thresholds = json.load(f)
+    print(f"✅ Đã load best_thresholds: {best_thresholds}")
+except FileNotFoundError:
+    print("⚠️ Không tìm thấy file best_thresholds.json, sẽ dùng mặc định 0.5")
+    best_thresholds = {col: 0.5 for col in LABEL_COLS}
+
 
 # ==========================================
-# 3. HÀM DỰ ĐOÁN & GIAO DIỆN GRADIO
+# 2. HÀM DỰ ĐOÁN & GIAO DIỆN GRADIO
 # ==========================================
 
 def predict_toxicity(text):
@@ -60,13 +73,25 @@ def predict_toxicity(text):
         # Sigmoid cho multi-label
         probs = torch.sigmoid(logits).cpu().numpy()[0]
     
-    # 4. Trả kết quả format dictionary
-    labels = [
+    # 4. Trả kết quả format dictionary kèm Threshold
+    labels_vn = [
         'Độc hại (Toxic)', 'Rất độc hại (Severe)', 'Tục tĩu (Obscene)', 
         'Đe dọa (Threat)', 'Xúc phạm (Insult)', 'Ghét bỏ sắc tộc (Identity Hate)'
     ]
     
-    results = {labels[i]: float(probs[i]) for i in range(len(labels))}
+    results = {}
+    for i, col in enumerate(LABEL_COLS):
+        thresh = best_thresholds.get(col, 0.5)
+        prob = float(probs[i])
+        
+        # Đánh dấu CÓ/KHÔNG tùy thuộc vào việc prob có vượt ngưỡng hay không
+        if prob >= thresh:
+            display_name = f"🔴 CÓ: {labels_vn[i]} (Ngưỡng: {thresh})"
+        else:
+            display_name = f"🟢 KHÔNG: {labels_vn[i]} (Ngưỡng: {thresh})"
+            
+        results[display_name] = prob
+        
     return results
 
 # Cấu hình giao diện Gradio
@@ -79,16 +104,16 @@ interface = gr.Interface(
     ),
     outputs=gr.Label(
         num_top_classes=6, 
-        label="Dự đoán mức độ độc hại"
+        label="Dự đoán mức độ độc hại (Thanh ngang thể hiện xác suất thực tế)"
     ),
     title="🛡️ Hệ thống phát hiện bình luận độc hại (BERT)",
-    description="Nhập một đoạn văn bản tiếng Anh để kiểm tra khả năng nhận diện các loại độc hại khác nhau.",
+    description="Nhập một đoạn văn bản tiếng Anh. Hệ thống sẽ so sánh xác suất dự đoán với Threshold tối ưu để đưa ra kết luận cuối cùng.",
     examples=[
         ["I love you so much!"],
         ["You are an idiot and I hate you!"],
         ["I will find you and kill you!"]
     ],
-    theme="default" # Giao diện mặc định chuẩn
+    theme="default" 
 )
 
 if __name__ == "__main__":
