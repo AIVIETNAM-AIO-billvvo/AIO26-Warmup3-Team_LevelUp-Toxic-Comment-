@@ -31,12 +31,12 @@ Dựa trên tập dữ liệu từ cuộc thi **Jigsaw Toxic Comment Classificat
 
 ## Loss và metric
 ### Train với 2 epochs 
-<img width="1301" height="395" alt="image" src="https://github.com/user-attachments/assets/7fb7a0fe-93f9-41f2-9d65-d63601860dab" />
-<img width="1301" height="395" alt="image" src="https://github.com/user-attachments/assets/9dcff059-9c8a-4bf0-b063-4f2d3c32b418" />
+<img width="1301" height="700" alt="image" src="https://github.com/user-attachments/assets/7fb7a0fe-93f9-41f2-9d65-d63601860dab" />
+<img width="1301" height="700" alt="image" src="https://github.com/user-attachments/assets/9dcff059-9c8a-4bf0-b063-4f2d3c32b418" />
 
 ### Train với 4 epochs
-<img width="1301" height="395" alt="image" src="https://github.com/user-attachments/assets/6611f583-0239-4b38-bfc2-f66aae27d257" />
-<img width="1301" height="395" alt="image" src="https://github.com/user-attachments/assets/5777a551-5d71-4d70-871e-74d5d0bcc9ba" />
+<img width="1301" height="700" alt="image" src="https://github.com/user-attachments/assets/6611f583-0239-4b38-bfc2-f66aae27d257" />
+<img width="1301" height="700" alt="image" src="https://github.com/user-attachments/assets/5777a551-5d71-4d70-871e-74d5d0bcc9ba" />
 
 ## So sánh khi tính toán metric với các Threshold khác nhau 
 Vì dữ liệu mất cân bằng thiên về 1 phía toxic và dữ liệu khan hiếm (Không thể cải thiện data). Do đó, team đã chọn cách điều chỉnh threshold của từng nhãn để hạn chế tác hại từ việc mất cân bằng dữ liệu.
